@@ -36,3 +36,43 @@
     transform: rotate(360deg);
   }
 }
+
+
+/*  Custom CSS start    */
+
+
+.product-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  color: gray;
+}
+
+.price-tag {
+  display: flex;
+  align-items: center;
+  border: 2px solid rgb(91 38 140 / 48%);
+  color: rgb(91 38 140 / 48%);
+  padding: 4px;
+  border-radius: 4px;
+}
+
+.add-button {
+  border: 2px solid #ce23ce !important;
+  color: #ce23ce !important;
+}
+
+.products-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  row-gap: 30px;
+}
+
+.filters-container {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #E4E4E4;
+}
