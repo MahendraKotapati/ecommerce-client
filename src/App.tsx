@@ -1,5 +1,6 @@
 import './App.css';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import '../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js';
 import { Login } from './components/Login';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Signup } from './components/Signup';
@@ -7,6 +8,7 @@ import { CatalogPage } from './components/CatalogPage';
 import { Header } from './components/Header';
 import { AuthProvider, useAuth } from './components/AuthProvider';
 import { Logout } from './components/Logout';
+import { Admin } from './components/Admin';
 
 
 const AuthenticatedRoute = ({children}: {children: any}) => {
@@ -29,6 +31,9 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/admin" element={
+            <AuthenticatedRoute> <Admin /> </AuthenticatedRoute>
+          } />
           
           <Route path="/products" element={
             <AuthenticatedRoute> <CatalogPage /> </AuthenticatedRoute>

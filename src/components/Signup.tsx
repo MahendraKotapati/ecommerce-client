@@ -11,12 +11,13 @@ export const Signup = () => {
     const [password, setPassword] = useState("");
     const [error, setError] = useState(false);
     const navigate = useNavigate();
+    const {token} = useAuth();
     const {isAutheticated, setIsAuthenticated, setEmail: setLoggedUserEmail} = useAuth();
 
     const registerUser = async () => {
         let response;
         try {
-            response = await dataService.registerUser(fullName, email, password);
+            response = await dataService.registerUser(fullName, email, password, token);
             console.log('response: ', response);
             setError(false);
             if (response.success) {

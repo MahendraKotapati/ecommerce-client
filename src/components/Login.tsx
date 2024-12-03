@@ -18,13 +18,22 @@ export const Login = () => {
       return ;
     }
 
-    if ((await login(email, password))) {
-      navigate(`/products`);
+    const loginResponse: any = await login(email, password);
+
+
+    if (loginResponse.success) {
+      if (loginResponse.data.role == "admin") {
+        navigate(`/admin`);
+      } else {
+        navigate(`/products`);
+      }
       setError(false);
     } else {
       setError(true);
     }
   }
+
+  
 
 
   return (

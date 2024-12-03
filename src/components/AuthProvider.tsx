@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from "react"
-import { DataService } from "../services/data.service";
+import { apiClient, DataService } from "../services/data.service";
 
 export interface AuthState {
     isAutheticated: boolean;
@@ -8,6 +8,7 @@ export interface AuthState {
     logout: () => void;
     setIsAuthenticated: (isAutheticated: boolean) => any;
     setEmail: (email: string) => any;
+    token: string;
 }
 
 export const AuthContext = createContext({} as AuthState);
@@ -18,8 +19,9 @@ interface Props {
 }
 
 export const AuthProvider = ({children}: Props) => {
-    const [isAutheticated, setIsAuthenticated] = useState(false);
-    const [email, setEmail] = useState("");
+    const [isAutheticated, setIsAuthenticated] = useState(false); // false
+    const [email, setEmail] = useState(""); // "mahendra@gmail.com"
+    const [token, setToken] = useState("");
 
     const dataService = new DataService();
 
@@ -29,19 +31,26 @@ export const AuthProvider = ({children}: Props) => {
         try {
             response = await dataService.login(email, password);
             if (response.success) {
+                const token = response.data.token;
+                apiClient.interceptors.request.use((config) => { 
+                    config.headers.Authorization = token;
+                    return config;
+                });
+
                 setIsAuthenticated(true);
                 setEmail(email);
-                return true;
+                setToken(token);
+                return response;
             }
             else {
                 setIsAuthenticated(false);
                 setEmail("");
-                return false;
+                return response;
             }
         } catch {
             setIsAuthenticated(false);
             setEmail("");
-            return false;
+            return response;
         }
 
         console.log('login response: ', response);
@@ -53,7 +62,7 @@ export const AuthProvider = ({children}: Props) => {
     }
 
     return (
-        <AuthContext.Provider value={{isAutheticated, setIsAuthenticated, setEmail , email, login, logout }}>
+        <AuthContext.Provider value={{isAutheticated, setIsAuthenticated, setEmail , email, login, logout, token }}>
             {children}
         </AuthContext.Provider>
     )
